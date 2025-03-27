@@ -13,15 +13,24 @@ export default class Greeting {
   };
 
   constructor(lang: string) {
-    this.lang = lang.toLowerCase();
+    this.lang = this.NormalizeInput(lang)
     this.hello();
   }
+
+  private NormalizeInput(input : string): string {
+    const lowerCased = input.toLowerCase();
+    if (lowerCased in this.translateTable) {
+      return lowerCased;
+    } else if (lowerCased in this.arguAliesTable) {
+      return this.arguAliesTable[lowerCased];
+    } else {
+      throw new Error("지원되지 않는 언어입니다!")
+    }
+  }
+
   hello(): void {
-    if (this.lang in this.translateTable) {
+    if (this.lang !="unknown") {
       console.log(this.translateTable[this.lang]);
-    } else if (this.lang in this.arguAliesTable) {
-      const normalizeArgument = this.arguAliesTable[this.lang];
-      console.log(this.translateTable[normalizeArgument]);
     } else {
       console.log("잘못된 표현입니다");
     }
